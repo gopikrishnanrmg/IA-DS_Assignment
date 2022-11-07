@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-     <meta charset="UTF-8">
-     <title>Details</title>
+    <meta charset="UTF-8">
+    <title>Details</title>
 </head>
 
 <body>
+<p>{{ cat }}</p>
 <p>{{ warehouse_loc }}</p>
- {% if prod_list %}
- <ol>
- {% for prod in prod_list %}
- <li> {{ prod }} </li>
- {% endfor %}
- </ol>
- {% else %}
- <strong>There are no products!</strong>
- {% endif %}
- <p><a href="{% url 'myapp:index' %}">Index page</a></p>
+{% if prod_list %}
+    <ol>
+        {% for prod in prod_list %}
+            <li> {{ prod }} </li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <strong>There are no products!</strong>
+{% endif %}
+<p><a href="{% url 'myapp:index' %}">Index page</a></p>
 <p><a href="{% url 'myapp:about' %}">About page</a></p>
 </body>
 </html>

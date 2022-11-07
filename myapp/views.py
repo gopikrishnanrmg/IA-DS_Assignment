@@ -7,13 +7,13 @@ from .models import Category, Product, Client, Order
 
 def index(request):
     cat_list = Category.objects.all().order_by('id')[:10]
-    return render(request, 'myapp/index0.html', {'cat_list': cat_list})
+    return render(request, 'myapp/index.html', {'cat_list': cat_list})
 
 def about(request):
-    return render(request, 'myapp/about0.html')
+    return render(request, 'myapp/about.html')
 
 def detail(request, cat_no):
     category = get_object_or_404(Category, id=cat_no)
     warehouse_location = category.warehouse
     prod_list = Product.objects.filter(category=category)
-    return render(request, 'myapp/detail0.html', {'prod_list': prod_list, 'warehouse_loc': warehouse_location})
+    return render(request, 'myapp/detail.html', {'prod_list': prod_list, 'warehouse_loc': warehouse_location, 'cat': category})
