@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/style.css' %}"/>
+    <title>Online Store APP - {% block title %}Welcome!{% endblock %}</title>
+</head>
+<body>
+<div>
+    <h1>
+        <div class="app-title">
+            {% block myhdg1 %}Online Store App {% endblock %}
+        </div>
+        <div class="user-name-title">
+            {% block myhdg %}Hello Deep {% endblock %}
+        </div>
+    </h1>
+    {% block body_block %}*** {% endblock %}
+</div>
+<hr/>
+<div class="footer-class">
+    <ul>
+        <li class="hbar1"><a href="/myapp/about/">Find out about this site</a></li>
+        {% if request.path != "/myapp/" %}
+            <li class="hbar1">
+                <a href="{% url 'myapp:index' %}">Click here to return to main page</a>
+            </li>
+        {% endif %}
+        {% if request.path != "/myapp/products" %}
+            <li class="hbar1">
+                <a href="{% url 'myapp:products' %}">Click here to see products</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+</body>
+</html>
