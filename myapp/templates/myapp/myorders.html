@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+
+{% block myhdg %}
+    Orders
+{% endblock %}
+
+{% block body_block %}
+    {% if isClient %}
+         {% if orderlist %}
+            <h3>Your Orders</h3>
+            <ul>
+                {% for order in orderlist %}
+                    <li> Product ID: {{ order.product_id }} </li>
+                    <li> Product Name: {{ order.name }}</li>
+                    <li> Units: {{ order.num_units }} </li>
+                    <li> Order Status: {{ order.order_status }} </li>
+                    <li> Date: {{ order.status_date }} </li>
+                    <br>
+                {% endfor %}
+            </ul>
+       {% else %}
+            <h3>You have no orders</h3>
+        {% endif %}
+
+    {% else %}
+        <h3>You are not a client</h3>
+    {% endif %}
+
+
+
+{% endblock %}

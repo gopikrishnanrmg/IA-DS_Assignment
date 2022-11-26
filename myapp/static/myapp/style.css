@@ -1,6 +1,7 @@
 h1 {
     background-color: cadetblue;
     color: whitesmoke;
+    font-family: Verdana;
     font-size: medium;
     position: center;
 }
@@ -8,4 +9,8 @@ h1 {
 .hbar1 {
  display: inline;
  margin: 15px;
+}
+
+.h2{
+    background-color: aqua;
 }

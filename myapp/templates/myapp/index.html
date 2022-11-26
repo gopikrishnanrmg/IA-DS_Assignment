@@ -11,5 +11,10 @@
 {% else %}
     <strong>There are no available categories!</strong>
 {% endif %}
+    {% if request.session.last_login %}
+        <p>{{ request.session.last_login }}</p>
+    {% else %}
+        <p>Your last login was more than one hour ago</p>
+    {% endif %}
     <p><a href="{% url 'myapp:about' %}">About page</a></p>
 {% endblock %}
