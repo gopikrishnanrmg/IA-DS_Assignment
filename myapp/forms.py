@@ -1,5 +1,5 @@
 from django import forms
-from myapp.models import Order
+from myapp.models import Order, Client
 
 
 class OrderForm(forms.ModelForm):
@@ -20,3 +20,9 @@ class InterestForm(forms.Form):
     interested = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
     quantity = forms.IntegerField(label="Quantity", min_value=1)
     comments = forms.CharField(required=False, widget=forms.Textarea, label='Additional Comments')
+
+
+class RegisterForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'shipping_address', 'city', 'province')

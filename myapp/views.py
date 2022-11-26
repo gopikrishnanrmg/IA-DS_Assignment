@@ -3,7 +3,7 @@ import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls.base import reverse
 
-from .forms import OrderForm, InterestForm
+from .forms import OrderForm, InterestForm, RegisterForm
 from .models import Category, Product, Client, Order
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # Create your views here.
+redirect = False
 
 def index(request):
     cat_list = Category.objects.all().order_by('id')[:10]
@@ -99,27 +100,32 @@ def user_login(request):
             print(request.session.keys(), request.session.values())
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect(reverse('myapp:index'))
+                if not request.session['redirect_myorders']:
+                    return HttpResponseRedirect(reverse('myapp:index'))
+                else:
+                    return HttpResponseRedirect(reverse('myapp:myorders'))
             else:
                 return HttpResponse('Your account is disabled.')
         else:
             return HttpResponse('Invalid login details.')
-    else:
-        return render(request, 'myapp/login.html')
 
 
-@login_required
 def myorders(request):
     user = request.user
-    clients = list(Client.objects.values_list('username', flat=True))
-    if str(user) in clients:
-        id = Client.objects.values_list('id', flat=True).filter(username=str(user))[0]
-        orders = list(Order.objects.values().filter(client_id=id))
-        for order in orders:
-            order['name']=Product.objects.values('name').filter(id=order['product_id'])[0]['name']
-        return render(request, 'myapp/myorders.html', {'orderlist': orders, 'isClient': True})
+    if str(user) != 'AnonymousUser':
+        clients = list(Client.objects.values_list('username', flat=True))
+        if str(user) in clients:
+            id = Client.objects.values_list('id', flat=True).filter(username=str(user))[0]
+            orders = list(Order.objects.values().filter(client_id=id))
+            for order in orders:
+                order['name'] = Product.objects.values('name').filter(id=order['product_id'])[0]['name']
+            return render(request, 'myapp/myorders.html', {'orderlist': orders, 'isClient': True})
+        else:
+            return render(request, 'myapp/myorders.html', {'orderlist': [], 'isClient': False})
     else:
-        return render(request, 'myapp/myorders.html', {'orderlist': [], 'isClient': False})
+        request.session['redirect_myorders'] = True
+        request.session.set_expiry(3600)
+        return render(request, 'myapp/login.html')
 
 
 @login_required
@@ -128,3 +134,15 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('myapp:index'))
 
 
+def user_register(request):
+    msg = ''
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return render(request, 'myapp/login.html')
+    else:
+        form = RegisterForm()
+    return render(request, 'myapp/register.html', {'form': form, 'msg': msg})
