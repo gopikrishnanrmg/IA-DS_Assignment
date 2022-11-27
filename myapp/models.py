@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -17,7 +18,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=100)
+    stock = models.PositiveIntegerField(default=100,validators=[MaxValueValidator(1000), MinValueValidator(0)])
     available = models.BooleanField(default=True)
     description = models.TextField(blank=True)
     interested = models.PositiveIntegerField(default=0)
