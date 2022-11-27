@@ -11,7 +11,7 @@
 {% block body_block %}
     <div class="form-group">
         <h3 style="text-align: left;">Registration form</h3>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Submit</button>

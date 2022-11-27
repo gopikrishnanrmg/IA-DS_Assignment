@@ -1,5 +1,8 @@
+from django.conf.urls.static import static
 from django.urls import path
 from myapp import views
+from mysiteF21 import settings
+
 app_name = 'myapp'
 urlpatterns = [
      path('json', views.json, name='json'),
@@ -14,3 +17,7 @@ urlpatterns = [
      path(r'place_order/', views.place_order, name='place_order'),
      path(r'products/<int:prod_id>/', views.productdetail, name='product_detail'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

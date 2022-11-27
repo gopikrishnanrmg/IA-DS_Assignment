@@ -36,6 +36,7 @@ class Client(User):
     shipping_address = models.CharField(max_length=300, null=True, blank=True)
     city = models.CharField(max_length=20, default='Windsor')
     province = models.CharField(max_length=2, choices=PROVINCE_CHOICES, default='ON')
+    avatar = models.ImageField(upload_to='images', blank=False)
     interested_in = models.ManyToManyField(Category)
 
     def __str__(self):

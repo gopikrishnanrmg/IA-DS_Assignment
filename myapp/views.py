@@ -23,8 +23,9 @@ def index(request):
     else:
         loggedIn = False
     cat_list = Category.objects.all().order_by('id')[:10]
+    avatar = Client.objects.values('avatar').filter(first_name=user.first_name)[0]['avatar']
     print(str(request.session.keys()))
-    return render(request, 'myapp/index.html', {'cat_list': cat_list,'loggedin': str(loggedIn),'user': user})
+    return render(request, 'myapp/index.html', {'cat_list': cat_list,'loggedin': str(loggedIn),'user': user, 'avatar': 'media/'+avatar})
 
 
 def about(request):
@@ -178,7 +179,7 @@ def user_register(request):
         loggedIn = False
     msg = ''
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])

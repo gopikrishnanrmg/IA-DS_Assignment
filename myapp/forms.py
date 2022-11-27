@@ -25,4 +25,4 @@ class InterestForm(forms.Form):
 class RegisterForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'shipping_address', 'city', 'province')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'avatar', 'shipping_address', 'city', 'province')
