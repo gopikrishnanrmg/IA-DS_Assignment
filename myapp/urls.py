@@ -5,7 +5,7 @@ from mysiteF21 import settings
 
 app_name = 'myapp'
 urlpatterns = [
-     path('json', views.json, name='json'),
+     path(r'json', views.json, name='json'),
      path(r'', views.index, name='index'),
      path(r'about/', views.about, name='about'),
      path(r'detail/<int:cat_no>', views.detail, name='detail'),
@@ -16,6 +16,8 @@ urlpatterns = [
      path(r'products/', views.products, name='products'),
      path(r'place_order/', views.place_order, name='place_order'),
      path(r'products/<int:prod_id>/', views.productdetail, name='product_detail'),
+     path(r'password_reset/', views.password_reset, name='password_reset'),
+     path(r'password_reset/<str:done>/', views.password_reset_done, name='password_reset_done'),
 ]
 
 if settings.DEBUG:
