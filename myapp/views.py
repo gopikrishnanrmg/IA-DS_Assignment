@@ -13,7 +13,6 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-redirect = False
 
 def index(request):
     user = request.user
@@ -22,8 +21,11 @@ def index(request):
         loggedIn = True
     else:
         loggedIn = False
+    try:
+        avatar = Client.objects.values('avatar').filter(first_name=user.first_name)[0]['avatar']
+    except Exception:
+        avatar = ''
     cat_list = Category.objects.all().order_by('id')[:10]
-    avatar = Client.objects.values('avatar').filter(first_name=user.first_name)[0]['avatar']
     print(str(request.session.keys()))
     return render(request, 'myapp/index.html', {'cat_list': cat_list,'loggedin': str(loggedIn),'user': user, 'avatar': 'media/'+avatar})
 
@@ -133,15 +135,17 @@ def user_login(request):
             print(request.session.keys(), request.session.values())
             if user.is_active:
                 login(request, user)
-                if not request.session['redirect_myorders']:
+                if not request.session.keys().__contains__('redirect_myorders'):
                     return HttpResponseRedirect(reverse('myapp:index'))
                 else:
+                    del request.session['redirect_myorders']
                     return HttpResponseRedirect(reverse('myapp:myorders'))
             else:
                 return HttpResponse('Your account is disabled.')
         else:
             return HttpResponse('Invalid login details.')
-
+    else:
+        return render(request, 'myapp/login.html', {'loggedin': str(False)})
 
 def myorders(request):
     user = request.user
