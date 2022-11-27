@@ -26,3 +26,6 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ('username', 'first_name', 'last_name', 'email', 'password', 'avatar', 'shipping_address', 'city', 'province')
+        
+class Password_ResetForm(forms.Form):
+    email = forms.EmailField(required=True, label="Email")

@@ -3,13 +3,17 @@ import datetime
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.urls.base import reverse
 
-from .forms import OrderForm, InterestForm, RegisterForm
+from .forms import OrderForm, InterestForm, RegisterForm, Password_ResetForm
 from .models import Category, Product, Client, Order
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.core.mail import send_mail, BadHeaderError
+import random
+import string
+from django.template.loader import render_to_string
 
 
 # Create your views here.
@@ -193,3 +197,58 @@ def user_register(request):
 def json(request):
     data = list(Category.objects.values())
     return JsonResponse(data, safe=False)
+
+def password_reset(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        user = User.objects.filter(email=email)
+        print(user)
+        if user:
+            user = user[0]
+            new_password = generate_password()
+            user.set_password(new_password)
+            user.save()
+
+            print(new_password)
+
+            # Email settings
+            subject = "New Password"
+            email_template_name = "myapp/password_reset_email.txt"
+            c = {
+                "email": user.email,
+                'domain': '127.0.0.1:8000',
+                'site_name': 'Website',
+                "user": user,
+                'protocol': 'http',
+                'new_password': new_password,
+            }
+            email = render_to_string(email_template_name, c)
+            try:
+                send_mail(subject, email, 'websiteaccforme@gmail.com', [user.email], fail_silently=False)
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+
+            return render(request, 'myapp/password_reset_done.html', {'done': "true"})
+        else:
+            return render(request, 'myapp/password_reset_done.html', {'done': "false"})
+    else:
+        if request.user.is_authenticated:
+            return redirect(reverse('myapp:myorders'))
+        password_reset_form = Password_ResetForm()
+        return render(request, 'myapp/password_reset.html', {'form': password_reset_form})
+    
+def password_reset_done(request, done):
+    print(done)
+    return render(request, 'myapp/password_reset_done.html', {'done': done})
+
+def generate_password():
+    characters = list(string.ascii_letters + string.digits + "!@#$%^&*()")
+    password_length = 8
+    random.shuffle(characters)
+
+    password = []
+    for i in range(password_length):
+        password.append(random.choice(characters))
+
+    random.shuffle(password)
+    return "".join(password)
