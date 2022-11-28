@@ -5,9 +5,11 @@
 {#{% endblock %}#}
 
 {% block body_block %}
+    {% if avatar != 'media/' %}
     <div style="height: 50px; width: 50px">
         <img style="border-radius: 50%; height: 100%; width: auto;" src={{ avatar }} alt="" />
     </div>
+    {% endif %}
     {% if cat_list %}
     <h2>List of Categories</h2>
     <ol>
