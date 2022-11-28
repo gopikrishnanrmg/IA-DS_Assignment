@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 {% extends 'myapp/base.html' %}
 {% block title %}
     About
@@ -5,7 +9,7 @@
 {% block body_block %}
     <p> This is an Online Store APP. </p>
     {% if request.COOKIES.about_visits %}
-        <p>You have visited this site {{ request.COOKIES.about_visits }} times</p>
+        <p>You have visited this site <mark class="bg-danger">{{ request.COOKIES.about_visits }} times </mark></p>
     {% endif  %}
     <p><a href='/myapp/'>Index page using hardcoded value</a></p>
     <p><a href="{% url 'myapp:index' %}">Index page using url namespace</a></p>
