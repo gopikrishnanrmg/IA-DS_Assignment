@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'myapp/style.css' %}"/>
     <title>Online Store APP - {% block title %}Welcome!{% endblock %}</title>
@@ -10,27 +13,27 @@
     <h1>
         <div class="app-title">
             {% block myhdg1 %}Online Store App {% endblock %}
-        </div>
+        </div><br>
         <div class="user-name-title">
             {% if loggedin == "False" %}
             {% block myhdg2 %}Hello User {% endblock %}
             {% else %}
             {% block myhdg3 %}Hello {{user.first_name}} {% endblock %}
             {% endif %}
-        </div>
+        </div><br>
         {% if loggedin == "False" %}
         <li class="hbar1">
-            <a href="{% url 'myapp:register' %}">Register</a>
+            <a class="btn btn-primary" href="{% url 'myapp:register' %}">Register</a>
         </li>
         <li class="hbar1">
-            <a href="{% url 'myapp:login' %}">Login</a>
+            <a class="btn btn-primary" href="{% url 'myapp:login' %}">Login</a>
         </li>
         {% else %}
             <li class="hbar1">
-                <a href="{% url 'myapp:myorders' %}">My Orders</a>
+                <a class="btn btn-primary" href="{% url 'myapp:myorders' %}">My Orders</a>
             </li>
             <li class="hbar1">
-                <a href="{% url 'myapp:logout' %}">Logout</a>
+                <a class="btn btn-primary" href="{% url 'myapp:logout' %}">Logout</a>
             </li>
         {% endif %}
     </h1>

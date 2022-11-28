@@ -4,6 +4,17 @@ h1 {
     font-family: Verdana;
     font-size: medium;
     position: center;
+    padding-left: 10px;
+    padding-top: 10px;
+    width: 99%;   
+}
+
+form{
+    margin-left: 10px;
+}
+
+body{
+    margin-left: 1%;
 }
 
 .hbar1 {
