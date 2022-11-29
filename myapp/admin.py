@@ -6,7 +6,7 @@ admin.site.register(Order)
 
 # Register your models here.
 @admin.action(description='Add 50 items to selected Products')
-def add50(queryset):
+def add50(modeladmin, request, queryset):
     for product in queryset:
         product.stock += 50
         product.save()
