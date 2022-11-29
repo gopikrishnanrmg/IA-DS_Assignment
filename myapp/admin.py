@@ -9,6 +9,8 @@ admin.site.register(Order)
 def add50(modeladmin, request, queryset):
     for product in queryset:
         product.stock += 50
+        if product.stock > 1000:
+            product.stock = 1000
         product.save()
 
 class ProductAdmin(admin.ModelAdmin):
